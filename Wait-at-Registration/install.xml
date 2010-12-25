@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http
+://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.3.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		
+		<title lang="en">Wait At Registration</title>
+		
+		<description lang="en">This mod will set a timing in the Agreement page so the user reads the Terms!</description>
+		
+		<author-notes lang="en">If you want to update from Wait at Registration 0.0.4 to 1.0.1, just remove the edits of Wait at Registration 0.0.4 and follow the install instructions for 1.0.1.
+You can find the old install instructions from WaR 0.0.4 in the contrib folder.
+		
+Juan Fernandez: This is my first mod! Also thanks to all the guys that help me in the IRC Chat and A_Jelly_Doughnut!</author-notes>
+		<author-notes lang="de">Um von Wait at Registration 0.0.4 auf 1.0.1 zu aktualisieren, entferne einfach die Code-Anpassungen von WaR 0.0.4 und führe danach die Code-Anpassungen von WaR 1.0.1 aus. 
+Du kannst die alte Installations-Anleitung von WaR 0.0.4 im contrib-Ordner finden.</author-notes>
+		
+		<author-group>
+			<author>
+				<realname>Marc Alexander</realname>
+				<email>admin@m-a-styles.de</email>
+				<username>marc1706</username>
+				<homepage>http://www.m-a-styles.de</homepage>
+				<contributions-group>
+					<contributions status="current" position="Developer"/>
+				</contributions-group>
+			</author>
+			<author>
+				<realname>Juan Fernandez</realname>
+				<username>Xtracker!</username>
+				<homepage>http://www.exckor.com</homepage>
+			<contributions-group>
+      		  <contributions status="past" position="Developer"/>
+      		</contributions-group>
+			</author>
+		</author-group>
+		
+		<link-group>
+			<link type="template" lang="en" href="contrib/subsilver2.xml">subsilver2</link>
+			<link type="language" lang="en" href="contrib/de.xml">German Language</link>
+			<link type="contrib" lang="en" href="contrib/update_100_to_101.xml">Update 1.0.0 to 1.0.1</link>
+			<link type="parent" lang="en" href="install.xml">Install instructions</link>
+		</link-group>
+		
+		<mod-version>1.0.1</mod-version>
+		
+		<installation>
+			<level>easy</level>
+			<time>120</time>
+			<target-version>3.0.6</target-version>
+		</installation>
+
+		<history>
+			<entry>
+				<date>2009-04-30</date>
+				<rev-version>0.0.0</rev-version>
+				<changelog lang="en">
+					<change>Release</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-01</date>
+				<rev-version>0.0.1</rev-version>
+				<changelog lang="en">
+					<change>Small Changes To Install.xml</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-01</date>
+				<rev-version>0.0.2</rev-version>
+				<changelog lang="en">
+					<change>Added A Countdown!</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-02</date>
+				<rev-version>0.0.3</rev-version>
+				<changelog lang="en">
+					<change>Separated Installs, Small Fix In Timming! And Able To Edit Language</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-10</date>
+				<rev-version>0.0.4</rev-version>
+				<changelog lang="en">
+					<change>Change The 2 Timer To Just One, Work Better Now! Thanks To A_Jelly_Doughnut!</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-12</date>
+				<rev-version>0.0.5</rev-version>
+				<changelog lang="en">
+					<change>If User Has JavaScript Disable It Will Display A Notice!</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-12-08</date>
+				<rev-version>1.0.0</rev-version>
+				<changelog lang="en">
+					<change>Removed Noscript-Notice as this is not XHTML 1.0 Strict valid</change>
+					<change>Moved time notice inside "Agree"-Button</change>
+					<change>Count can be configured via ACP</change>
+					<change>Reduced to only one function</change>
+					<change>Terms of Use page will work without any issues when Javascript is disabled</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-12-27</date>
+				<rev-version>1.0.1</rev-version>
+				<changelog lang="en">
+					<change>Reworked script with JQuery</change>
+					<change>Added fix for Internet Explorer</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	
+	<action-group>
+		<sql><![CDATA[INSERT INTO phpbb_config(config_name, config_value) VALUES ('countdown_interval', 20);]]></sql>
+		<copy>
+			<file from="root/styles/prosilver/template/countdown.html" to="styles/prosilver/template/countdown.html" />
+			<file from="root/styles/prosilver/template/countdown.js" to="styles/prosilver/template/countdown.js" />
+		</copy>
+		<open src="includes/acp/acp_board.php">
+			<edit>
+				<find><![CDATA['max_reg_attempts'		=> array('lang' => 'REG_LIMIT',				'validate' => 'int:0',	'type' => 'text:4:4', 'explain' => true),]]></find>
+				<action type="after-add"><![CDATA[						'countdown_interval'	=> array('lang' => 'COUNTDOWN_INTERVAL',	'validate' => 'int',	'type' => 'text:2:3', 'explain' => true),]]></action>
+			</edit>
+		</open>
+		<open src="includes/ucp/ucp_register.php">
+			<edit>		
+				<find><![CDATA['L_TERMS_OF_USE'	=> sprintf($user->lang['TERMS_OF_USE_CONTENT'], $config['sitename'], generate_board_url()),]]></find>
+				
+				<action type="after-add"><![CDATA[					'COUNTDOWN_INTERVAL'=> ($config['countdown_interval'] > 0) ? $config['countdown_interval'] : 0,]]></action>
+			</edit>
+		</open>
+		<open src="language/en/acp/board.php">
+			<edit>
+				<find><![CDATA[	'REG_LIMIT_EXPLAIN'			=> 'Number of attempts users can make at the confirmation code before being locked out that session.',]]></find>
+				<action type="after-add"><![CDATA[	'COUNTDOWN_INTERVAL'		=> 'Countdown',
+	'COUNTDOWN_INTERVAL_EXPLAIN'=> 'Enter the number of seconds until the user is able to agree to the Terms of Use. 0 will deactivate the countdown.',]]></action>
+			</edit>
+		</open>
+		<open src="styles/prosilver/template/ucp_agreement.html">
+			<edit>
+				<find><![CDATA[<input type="submit" name="agreed" id="agreed" value="{L_AGREE}" class="button1" />&nbsp;]]></find>
+				<inline-edit>
+				   <inline-find><![CDATA[class="button1"]]></inline-find>
+				   <inline-action type="after-add"><![CDATA[ <!-- IF COUNTDOWN_INTERVAL -->style="display: none;"<!-- ENDIF -->]]></inline-action>
+				</inline-edit>
+				<inline-edit>
+				   <inline-find><![CDATA[/>&nbsp;]]></inline-find>
+				   <inline-action type="replace-with"><![CDATA[/>]]></inline-action>
+				</inline-edit>
+			</edit>
+			<edit>		
+				<find><![CDATA[			<input type="submit" name="not_agreed" value="{L_NOT_AGREE}" class="button2" />]]></find>
+				
+				<action type="before-add"><![CDATA[			<!-- IF COUNTDOWN_INTERVAL -->
+				<!-- INCLUDE countdown.html -->
+			<!-- ENDIF -->
+			&nbsp;]]></action>
+			</edit>
+		</open>
+		
+		<diy-instructions lang="en">Just clear the cache and refresh the template!</diy-instructions>
+		<diy-instructions lang="de">Leere den Board-Cache und aktualisiere den Template-Cache nach der Installation!</diy-instructions>
+
+	</action-group>
+</mod>

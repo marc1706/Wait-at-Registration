@@ -1,0 +1,36 @@
+<input type="button" name="fake_agreed" id="fake_agreed" value="{L_AGREE}" class="button1" />
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/countdown.js"></script>
+<script type="text/javascript"> 
+// <![CDATA[
+/* 
+* @author Juan Fernandez (http://www.exckor.com)
+* @author Marc Alexander (http://www.m-a-styles.de)
+*
+* @package Wait At Registration
+* @version $Id: countdown.html 1.0.1
+* @copyright (c) 2009 Juan Fernandez, Marc Alexander
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+*
+*/
+var countDownInterval = {COUNTDOWN_INTERVAL} + 1;
+var div_backup = $('#fake_agreed').val();
+
+function countDown() 
+{
+	countDownInterval--;
+	
+	if (countDownInterval <= 0) {
+		$('#fake_agreed').hide();
+		$('#agreed').css('display', '');
+	} else {
+		$('#fake_agreed').val(div_backup + ' [' + countDownInterval + ']');
+		setTimeout(function () {countDown()}, 1000);
+	}
+}
+
+$(document).ready(function(){
+	countDown();
+});
+
+// ]]>
+</script>

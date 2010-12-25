@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http
+://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.3.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+		
+		<title lang="en">Wait At Registration</title>
+		
+		<description lang="en">This mod will set a timing in the Agreement page so the user reads the Terms!</description>
+		
+		<author-notes lang="en">This is my first mod! Also thanks to all the guys that help me in the IRC Chat and A_Jelly_Doughnut!</author-notes>
+		
+		<author-group>
+			<author>
+				<realname>Juan Fernandez</realname>
+				<username>Xtracker!</username>
+				<homepage>http://www.exckor.com</homepage>
+			</author>
+		</author-group>
+		
+		<mod-version>0.0.5</mod-version>
+		
+		<installation>
+			<level>easy</level>
+			<time>120</time>
+			<target-version>3.0.4</target-version>
+		</installation>
+
+		<history>
+			<entry>
+				<date>2009-04-30</date>
+				<rev-version>0.0.0</rev-version>
+				<changelog lang="en">
+					<change>Release</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-01</date>
+				<rev-version>0.0.1</rev-version>
+				<changelog lang="en">
+					<change>Small Changes To Install.xml</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-01</date>
+				<rev-version>0.0.2</rev-version>
+				<changelog lang="en">
+					<change>Added A Countdown!</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-02</date>
+				<rev-version>0.0.3</rev-version>
+				<changelog lang="en">
+					<change>Separated Installs, Small Fix In Timming! And Able To Edit Language</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-10</date>
+				<rev-version>0.0.4</rev-version>
+				<changelog lang="en">
+					<change>Change The 2 Timer To Just One, Work Better Now! Thanks To A_Jelly_Doughnut!</change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2009-05-12</date>
+				<rev-version>0.0.5</rev-version>
+				<changelog lang="en">
+					<change>If User Has JavaScript Disable It Will Display A Notice!</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	
+	<action-group>
+		
+		<open src="/language/en/ucp.php">
+			<edit>		
+				<find><![CDATA['USER_NOT_FOUND_OR_INACTIVE'	=> 'The usernames you specified could either not be found or are not activated users.',]]></find>
+				
+				<action type="after-add"><![CDATA['USER_WAIT'   	 => 'You have to wait',
+	'USER_WAIT2'     => 'seconds before you can agree!',]]>
+	</action>
+</edit>
+		</open>
+		<open src="/styles/prosilver/template/ucp_agreement.html">
+			<edit>		
+				<find><![CDATA[<input type="submit" name="agreed" id="agreed" value="{L_AGREE}" class="button1" />&nbsp;]]></find>
+				
+				<action type="before-add"><![CDATA[<h5 align="center"> 
+<noscript>Please Allow This Site To Use JavaScript</noscript>
+<div id="counter">
+<script type="text/javascript"> 
+var countDownInterval=21;
+var counterElement;
+function countDown() {
+	countDownInterval--;
+	if (countDownInterval == 0) {
+		counterElement.style.display = 'none';
+		document.getElementById('agreed').style.display='inline';
+	} else {
+		counterElement.innerHTML = "{L_USER_WAIT} <strong>" + countDownInterval + "</strong> {L_USER_WAIT2}";
+		setTimeout(countDown, 1000);
+	}
+}
+function startit() {
+	counterElement = document.getElementById('counter');
+	countDown();
+}
+window.onload = startit;
+</script> 
+</div>
+</h5>]]></action>
+</edit>
+				<edit>
+				<find><![CDATA[<input type="submit" name="not_agreed" value="{L_NOT_AGREE}" class="button2" />]]></find>
+				<action type="after-add"><![CDATA[<script type="text/javascript">
+							   document.getElementById('agreed').style.display='none'; // hide
+							</script>]]></action>
+				
+			</edit>
+		</open>
+		
+		<diy-instructions lang="en">Just clear the cache and refresh the template!</diy-instructions>
+
+	</action-group>
+</mod>
